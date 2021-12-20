@@ -1,0 +1,101 @@
+Créer un namespace :
+
+kubectl create namespace production -o yaml > createNamespace.yaml
+
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    createur: Daniel
+  name: production
+```
+
+Application du fichier du manifeste :
+```shell
+kubectl apply -f createNamespace.yaml
+```
+
+Vérification :
+```shell
+kubectl get namespaces
+```
+![[Pasted image 20211220145325.png]]
+
+Toutes les prochaines ressources doit être créer dans le namespaces :
+```shell
+kubectl config set-context --current --namespace=production
+kubectl config view --minify | grep namespace:
+```
+![[Pasted image 20211220145501.png]]
+
+Ecrire un manifest prod-red.yml pour déployer un pod avec l'image kodekloud/webapp-color en précisant que la color souhaitée est la rouge, le pod doit posséder le label app: web
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-red
+  labels:
+    app: web
+spec:
+  containers:
+  - env:
+    - name: APP_COLOR
+      value: red
+    image: kodekloud/webapp-color
+    name: pod-red
+```
+
+
+Ecrire un manifest prod-blue.yml pour déployer un pod avec l'image kodekloud/webapp-color en précisant que la color souhaitée est la bleue, le pod doit posséder le label app: web
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-blue
+  labels:
+    app: web
+spec:
+  containers:
+  - env:
+    - name: APP_COLOR
+      value: blue
+    image: kodekloud/webapp-color
+    name: pod-blue
+```
+
+Lancement des pods :
+```shell
+kubectl apply -f pod-red.yml
+kubectl apply -f pod-blue.yml
+kubectl get pods
+```
+![[Pasted image 20211220150154.png]]
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-nodeport-web
+  labels:
+    app: web
+spec:
+  type: NodePort
+  ports: 
+    - targetPort: 8080
+	   port: 8080
+	   nodePort: 30008
+  selector:
+    app: web
+```
+
+Création et vérification de la création du service :
+```shell
+kubectl apply -f service-nodeport-web.yaml
+kubectl describe services service-nodeport-web
+```
+![[Pasted image 20211220150709.png]]
+
