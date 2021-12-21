@@ -94,7 +94,7 @@ On constate que la création est en PENDING, et j'ai ma petite idée derrière �
 Si vous êtes curieux vous pourrez faire un describe sur un pods pour voir dans les Events pourquoi il est en pending!
 Vous constaterez qu'en réalité le Persistent Volume Claim n'existe pas encore et c'est donc du au manque de cette ressource que notre Deployement restera en PENDING ! 
 
-![[ressources/Pasted image 20211221114923.png]]
+![[./ressources/Pasted image 20211221114923.png]]
 
 Pour le moment nous allons dérouler le projet, jusqu'au moment où toutes les ressources seront créées pour relancer les manifests de déploiements
 
