@@ -94,7 +94,7 @@ On constate que la création est en PENDING, et j'ai ma petite idée derrière �
 Si vous êtes curieux vous pourrez faire un describe sur un pods pour voir dans les Events pourquoi il est en pending!
 Vous constaterez qu'en réalité le Persistent Volume Claim n'existe pas encore et c'est donc du au manque de cette ressource que notre Deployement restera en PENDING ! 
 
-![[./https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221114923.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221114923.png)
 
 Pour le moment nous allons dérouler le projet, jusqu'au moment où toutes les ressources seront créées pour relancer les manifests de déploiements
 
@@ -118,7 +118,7 @@ On peut vérifier que le service est bien créer avec la commande suivante :
 ```shell
 kubectl get svc -o wide
 ```
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221115248.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221115248.png)
 
 
 <h2>Deploiement de Wordpress</h2>
@@ -215,8 +215,7 @@ spec:
     - ReadWriteOnce
   resources: 
     requests: 
-	  storage: 1Gi
-	
+      storage: 1Gi
 ```
 
 Manifeste pour la création du volume persistent pour sauvegarder notre base de donnée mysql :
@@ -247,8 +246,7 @@ spec:
     - ReadWriteOnce
   resources: 
     requests: 
-	  storage: 1Gi
-	
+      storage: 1Gi
 ```
 
 Lors de la création de ces manifestes j'ai rencontré plusieurs souci que j'ai pu troubleshooté:
@@ -262,11 +260,11 @@ Ensuite nous pouvons vérifier avec les commandes suivantes que nos PV et PVC so
 kubectl get pvc -o wide
 kubectl get pv -o wide
 ```
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221114851.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221114851.png)
 
 
 A partir d'ici nous pouvons supprimer nos précédents deploy car les volumes n'étaient pas encorer créer et relancer leur création ! Et voila tout marche beaucoup mieux
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221120337.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221120337.png)
 
 <h2>Creation d'un service NodePort</h2>
 Créez un service de type nodeport pour exposer le frontend wordpress
@@ -295,18 +293,18 @@ kubectl apply -f wpNIP.yaml
 kubectl get svc -o wide
 kubectl describe svc wp-nodeport
 ```
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221121844.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221121844.png)
 
 <h2>Troubleshooting</h2>
 Bon petit problème rien ne fonctionne ! Troubleshooting time :
 
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221135523.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221135523.png)
 
 ubuntu@minikube-daniel:~/miniProjet$ kubectl create secret generic dbpassword  --from-literal=MYSQL_ROOT_PASSWORD=password
 secret/dbpassword created
 ubuntu@minikube-daniel:~/miniProjet$
 
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221135537.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221135537.png)
 
 Au début je n'utilisais pas le secret pour le mot de passe de la base de donnée, de plus la création de base de donnée n'est pas possible via un déploiement kubernetes avec des variables d'environnement, il faudra scripter et utiliser le LifeCycle management pour lancer un script de création au démarrage des machines.
 
@@ -314,7 +312,7 @@ Bon apres 1 heure de debuggage j'ai enfin trouvé mon erreur...
 
 Cela fonctionne très bien maintenant !
 
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221151659.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221151659.png)
 
 J'ai ajouté un variable au déploiement de WORDPRESS pour avoir plus de verbosité dans l'erreur.
 
@@ -342,7 +340,7 @@ kubectl apply -f .
 <h2>Résultat final</h2>
 
 Vous remarquerez à gauche mon site vu public, et a droite le tableau de bord de l'admin.
-![[https://github.com/djoseph14/k8s/blob/main/ressources/Pasted image 20211221153938.png]]
+![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221153938.png)
 
 
 <h2>BONUS - Ingress</h2>
