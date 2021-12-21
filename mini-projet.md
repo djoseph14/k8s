@@ -118,7 +118,6 @@ On peut vérifier que le service est bien créer avec la commande suivante :
 ```shell
 kubectl get svc -o wide
 ```
-![Alt text](https://github.com/djoseph14/k8s/blob/main/ressources/Pasted%20image%2020211221115248.png)
 
 
 <h2>Deploiement de Wordpress</h2>
